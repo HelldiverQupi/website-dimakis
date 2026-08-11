@@ -1,0 +1,180 @@
+:root {
+  --paper: #f4f4f0;
+  --ink: #16151b;
+  --line: #d9d8d1;
+  --accent: #d4460c;
+
+  --sans: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+.stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0;
+  animation: grid-draw 0.9s ease-out 0.1s forwards;
+}
+
+@keyframes grid-draw {
+  from { opacity: 0; }
+  to { opacity: 0.55; }
+}
+
+.coord {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+  opacity: 0.5;
+}
+
+.coord--tl {
+  top: 28px;
+  left: 28px;
+}
+
+.coord--br {
+  bottom: 28px;
+  right: 28px;
+}
+
+.content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(1.8rem, 8vw, 6rem);
+}
+
+.pin {
+  position: absolute;
+  left: clamp(1.8rem, 8vw, 6rem);
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  animation: pin-drop 0.6s cubic-bezier(0.3, 1.4, 0.4, 1) 0.5s forwards;
+}
+
+.pin-dot {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 5px rgba(212, 70, 12, 0.15);
+}
+
+.pin-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.45;
+  animation: pin-ping 2s ease-out infinite;
+}
+
+@keyframes pin-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+.pin-line {
+  width: 1px;
+  height: 26px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+@keyframes pin-drop {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.word {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 9vw, 6.4rem);
+  letter-spacing: -0.03em;
+  margin: 0;
+  white-space: nowrap;
+  opacity: 0;
+  animation: word-rise 0.7s ease-out 0.35s forwards;
+}
+
+@keyframes word-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tld {
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .content {
+    align-items: flex-end;
+    padding-bottom: 3rem;
+  }
+
+  .pin {
+    top: auto;
+    bottom: 48%;
+  }
+
+  .word {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid,
+  .pin,
+  .pin-dot::after,
+  .word {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .grid {
+    opacity: 0.55;
+  }
+
+  .pin-dot::after {
+    opacity: 0;
+  }
+}
