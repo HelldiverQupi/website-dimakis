@@ -25,6 +25,7 @@ html, body {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -59,7 +60,7 @@ html, body {
 }
 
 .coord--br {
-  bottom: 28px;
+  bottom: calc(28px + env(safe-area-inset-bottom));
   right: 28px;
 }
 
@@ -147,7 +148,7 @@ html, body {
 @media (max-width: 640px) {
   .content {
     align-items: flex-end;
-    padding-bottom: 3rem;
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom));
   }
 
   .pin {
